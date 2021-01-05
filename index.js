@@ -18,6 +18,7 @@ Toolkit.run(async tools => {
   }
 
   const messages = event.commits ? event.commits.map(commit => commit.message + '\n' + commit.body) : []
+  const commits = event.commits ? event.commits.map(commit => commit.sha) : []
 
   const commitMessage = 'version bump to'
   console.log('messages:', messages)
@@ -97,8 +98,9 @@ Toolkit.run(async tools => {
     console.log('creating patch:', `${process.env['INPUT_TAG-PREFIX']}${current}`, `${process.env['INPUT_TAG-PREFIX']}${newVersion.replace('v', '')}`)
 
     console.log('generating patch file')
-    if (messages.length > 0) {
-      const fromSha = tools.context.ref
+    if (commits.length > 0) {
+      console.log('commits', commits)
+      const fromSha = commits[0]
       const toSha = tools.context.sha
       console.log(fromSha, ' to ', toSha)
       // const diff = await tools.runInWorkspace('git', ['diff', '-p', `${current}..${process.env.GITHUB_HEAD_REF}`])
