@@ -98,7 +98,8 @@ Toolkit.run(async tools => {
 
     console.log('generating patch file')
     if (messages.length > 0) {
-      const fromSha = (await tools.runInWorkspace('git', 'rev-parse', 'master')).stdout
+      const gitRev = await tools.runInWorkspace('git', 'rev-parse', `${process.env['INPUT_TAG-PREFIX']}${current}`)
+      const fromSha = gitRev.stdout
       const toSha = tools.context.sha
       console.log(fromSha, ' to ', toSha)
       // const diff = await tools.runInWorkspace('git', ['diff', '-p', `${current}..${process.env.GITHUB_HEAD_REF}`])
