@@ -92,6 +92,7 @@ Toolkit.run(async tools => {
       const patchFile = diff.stdout
       await tools.runInWorkspace('mkdir', '-p', 'patches/stubs/main')
       fs.writeFileSync(`${tools.workspace()}/patches/stubs/main/${current}.patch`, patchFile)
+      // test pr
     }
 
     console.log('currentBranch:', currentBranch)
