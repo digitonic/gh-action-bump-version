@@ -101,7 +101,7 @@ Toolkit.run(async tools => {
       console.log('context', tools.context)
       // const fromSha = commits[0]
       // const toSha = tools.context.sha
-      // console.log(fromSha, ' to ', toSha)
+      console.log(tools.context.payload.before, ' to ', tools.context.payload.after)
       // const diff = await tools.runInWorkspace('git', ['diff', '-p', `${current}..${process.env.GITHUB_HEAD_REF}`])
       // const patchFile = diff.stdout
       // await tools.runInWorkspace('mkdir', '-p', 'patches/stubs/main')
