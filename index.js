@@ -98,8 +98,9 @@ Toolkit.run(async tools => {
 
     console.log('generating patch file')
     if (messages.length > 0) {
-      const commitsSha = event.commits.map(commit => commit.sha)
-      console.log(commitsSha[0], ' to ', commitsSha[commitsSha.length - 1])
+      const fromSha = (await tools.runInWorkspace('git', 'rev-parse', 'master')).stdout
+      const toSha = tools.context.sha
+      console.log(fromSha, ' to ', toSha)
       // const diff = await tools.runInWorkspace('git', ['diff', '-p', `${current}..${process.env.GITHUB_HEAD_REF}`])
       // const patchFile = diff.stdout
       // await tools.runInWorkspace('mkdir', '-p', 'patches/stubs/main')
