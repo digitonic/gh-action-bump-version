@@ -86,15 +86,6 @@ Toolkit.run(async tools => {
       currentBranch = process.env['INPUT_TARGET-BRANCH']
     }
 
-    if (isPullRequest) {
-      console.log('generating patch file')
-      const diff = await tools.runInWorkspace('git', ['diff', '-p', `${process.env.GITHUB_BASE_REF}..${process.env.GITHUB_HEAD_REF}`])
-      const patchFile = diff.stdout
-      await tools.runInWorkspace('mkdir', '-p', 'patches/stubs/main')
-      fs.writeFileSync(`${tools.workspace()}/patches/stubs/main/${current}.patch`, patchFile)
-      // test pr
-    }
-
     console.log('currentBranch:', currentBranch)
     // do it in the current checked out github branch (DETACHED HEAD)
     // important for further usage of the package.json version
@@ -104,6 +95,18 @@ Toolkit.run(async tools => {
     let newVersion = execSync(`npm version --git-tag-version=false ${version}`).toString().trim()
 
     console.log('creating patch:', `${process.env['INPUT_TAG-PREFIX']}${current}`, `${process.env['INPUT_TAG-PREFIX']}${newVersion.replace('v', '')}`)
+
+    console.log('generating patch file')
+    if (messages.length > 0) {
+      const commitsSha = event.commits.map(commit => commit.sha)
+      console.log(commitsSha[0], ' to ', commitsSha[commitsSha.length - 1])
+      // const diff = await tools.runInWorkspace('git', ['diff', '-p', `${current}..${process.env.GITHUB_HEAD_REF}`])
+      // const patchFile = diff.stdout
+      // await tools.runInWorkspace('mkdir', '-p', 'patches/stubs/main')
+      // fs.writeFileSync(`${tools.workspace()}/patches/stubs/main/${version}.patch`, patchFile)
+
+    }
+
 
     await tools.runInWorkspace('git', ['commit', '-a', '-m', `ci: ${commitMessage} ${newVersion}`])
 
