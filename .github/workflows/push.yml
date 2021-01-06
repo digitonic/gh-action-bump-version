@@ -28,8 +28,6 @@ jobs:
         uses: "digitonic/gh-action-bump-version@master"
         with:
           tag-prefix: 'v'
-          stub_path: 'stubs/main'
-          patches_path: 'patches'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "cat package.json"
