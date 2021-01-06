@@ -96,14 +96,20 @@ Toolkit.run(async tools => {
 
     console.log('creating patch:', `${process.env['INPUT_TAG-PREFIX']}${current}`, `${process.env['INPUT_TAG-PREFIX']}${newVersion.replace('v', '')}`)
 
-    console.log('generating patch file')
-    if (messages.length > 0) {
+    if (messages.length > 0 && 'inputs' in tools && 'stub_path' in tools.inputs && 'patches_path' in tools.input) {
+      console.log('generating patch file')
+      const stubPath = tools.inputs.stub_path
+      const patchesPath = tools.inputs.patches_path
       console.log(tools.context.payload.before, ' to ', tools.context.payload.after)
-      await tools.runInWorkspace('mkdir', ['-p', 'patches/stubs/main'])
-      const patchFile = `${tools.workspace}/patches/stubs/main/${newVersion.replace('v', '')}.patch`
+      await tools.runInWorkspace('mkdir', ['-p', `${patchesPath}/${stubPath}`])
+      const patchFile = `${tools.workspace}/${patchesPath}/${stubPath}/${newVersion.replace('v', '')}.patch`
       console.log('pathfile:', patchFile)
-      await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before, `--output=${patchFile}`])
-      await tools.runInWorkspace('git', ['add', `${patchFile}`])
+      const stub = `${tools.workspace}/${stubPath}/`
+      console.log('stub', stub)
+      await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before, `--output=${patchFile}`, '--', stub])
+      if (fs.existsSync(patchFile)) {
+        await tools.runInWorkspace('git', ['add', `${patchFile}`])
+      }
     }
 
     await tools.runInWorkspace('git', ['commit', '-a', '-m', `ci: ${commitMessage} ${newVersion}`])
