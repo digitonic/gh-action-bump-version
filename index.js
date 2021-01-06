@@ -108,7 +108,7 @@ Toolkit.run(async tools => {
           version: newVersion.replace('v', ''),
           stub: stubPath
         }
-        fs.writeFileSync(stubPath, JSON.stringify(stubPackage, null, 2))
+        fs.writeFileSync(stubPackagePath, JSON.stringify(stubPackage, null, 2))
       }
 
       console.log('generating patch file')
