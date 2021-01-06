@@ -1,0 +1,40 @@
+diff --git a/index.js b/index.js
+index 1715783..e9789cc 100644
+--- a/index.js
++++ b/index.js
+@@ -100,7 +100,10 @@ Toolkit.run(async tools => {
+     if (messages.length > 0) {
+       console.log(tools.context.payload.before, ' to ', tools.context.payload.after)
+       await tools.runInWorkspace('mkdir', ['-p', 'patches/stubs/main'])
+-      await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before, `--output=${tools.workspace}/patches/stubs/main/${newVersion.replace('v', '')}.patch`])
++      const patchFile = `${tools.workspace}/patches/stubs/main/${newVersion.replace('v', '')}.patch`
++      console.log('pathfile:', patchFile)
++      await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before, `--output=${patchFile}`])
++      await tools.runInWorkspace('git', ['add', `${patchFile}`])
+     }
+ 
+     await tools.runInWorkspace('git', ['commit', '-a', '-m', `ci: ${commitMessage} ${newVersion}`])
+diff --git a/package-lock.json b/package-lock.json
+index b7ef344..2c432e8 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "gh-action-bump-version",
+-  "version": "8.1.13",
++  "version": "8.1.14",
+   "lockfileVersion": 1,
+   "requires": true,
+   "dependencies": {
+diff --git a/package.json b/package.json
+index 468503d..f7b3e16 100644
+--- a/package.json
++++ b/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "gh-action-bump-version",
+-  "version": "8.1.13",
++  "version": "8.1.14",
+   "repository": {
+     "type": "git",
+     "url": "git+https://github.com/phips28/gh-action-bump-version.git"
