@@ -86,21 +86,6 @@ Toolkit.run(async tools => {
       currentBranch = process.env['INPUT_TARGET-BRANCH']
     }
 
-    console.log('generating patch file')
-    if (messages.length > 0) {
-      // console.log('context', tools.context)
-      // const fromSha = commits[0]
-      // const toSha = tools.context.sha
-      console.log(tools.context.payload.before, ' to ', tools.context.payload.after)
-      const diff = await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before])
-      // const diff = execSync(`git diff -p ${tools.context.payload.before} ${tools.context.payload.after}`).toString()
-      // const diff = execSync(`git diff -p ${tools.context.payload.before}`).toString()
-      console.log('diff', diff)
-      // const patchFile = diff.stdout
-      // await tools.runInWorkspace('mkdir', '-p', 'patches/stubs/main')
-      // fs.writeFileSync(`${tools.workspace()}/patches/stubs/main/${version}.patch`, patchFile)
-    }
-
     console.log('currentBranch:', currentBranch)
     // do it in the current checked out github branch (DETACHED HEAD)
     // important for further usage of the package.json version
@@ -111,6 +96,12 @@ Toolkit.run(async tools => {
 
     console.log('creating patch:', `${process.env['INPUT_TAG-PREFIX']}${current}`, `${process.env['INPUT_TAG-PREFIX']}${newVersion.replace('v', '')}`)
 
+    console.log('generating patch file')
+    if (messages.length > 0) {
+      console.log(tools.context.payload.before, ' to ', tools.context.payload.after)
+      await tools.runInWorkspace('mkdir', '-p', 'patches/stubs/main')
+      await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before, `--output=${tools.workspace()}/patches/stubs/main/${newVersion.replace('v', '')}.patch`])
+    }
 
     await tools.runInWorkspace('git', ['commit', '-a', '-m', `ci: ${commitMessage} ${newVersion}`])
 
