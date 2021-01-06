@@ -96,6 +96,7 @@ Toolkit.run(async tools => {
 
     console.log('creating patch:', `${process.env['INPUT_TAG-PREFIX']}${current}`, `${process.env['INPUT_TAG-PREFIX']}${newVersion.replace('v', '')}`)
 
+    console.log('inputs', tools.inputs)
     if (messages.length > 0 && 'inputs' in tools && 'stub_path' in tools.inputs && 'patches_path' in tools.inputs) {
       console.log('generating patch file')
       const stubPath = tools.inputs.stub_path
