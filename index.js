@@ -88,7 +88,6 @@ Toolkit.run(async tools => {
 
     console.log('generating patch file')
     if (messages.length > 0) {
-      await tools.runInWorkspace('git', 'fetch', 'origin', `${currentBranch}:${currentBranch}`)
       // console.log('context', tools.context)
       // const fromSha = commits[0]
       // const toSha = tools.context.sha
