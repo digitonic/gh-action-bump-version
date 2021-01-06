@@ -7,11 +7,11 @@ branding:
   icon: chevron-up
   color: blue
 inputs:
-  patches_path:
+  patches-path:
     description: 'relative path to keep the patches in'
     default: 'patches'
     required: false
-  stub_path:
+  stub-path:
     description: 'relative path to stub to diff'
     default: 'stubs/main'
     required: false

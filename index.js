@@ -96,11 +96,10 @@ Toolkit.run(async tools => {
 
     console.log('creating patch:', `${process.env['INPUT_TAG-PREFIX']}${current}`, `${process.env['INPUT_TAG-PREFIX']}${newVersion.replace('v', '')}`)
 
-    console.log('inputs', tools.inputs)
-    if (messages.length > 0 && 'inputs' in tools && 'stub_path' in tools.inputs && 'patches_path' in tools.inputs) {
+    if (messages.length > 0 && 'INPUT_STUB-PATH' in process.env && 'INPUT_PATCHES-PATH' in process.env) {
       console.log('generating patch file')
-      const stubPath = tools.inputs.stub_path
-      const patchesPath = tools.inputs.patches_path
+      const stubPath = process.env['INPUT_STUB-PATH']
+      const patchesPath = process.env['INPUT_PATCHES-PATH']
       console.log(tools.context.payload.before, ' to ', tools.context.payload.after)
       await tools.runInWorkspace('mkdir', ['-p', `${patchesPath}/${stubPath}`])
       const patchFile = `${tools.workspace}/${patchesPath}/${stubPath}/${newVersion.replace('v', '')}.patch`
