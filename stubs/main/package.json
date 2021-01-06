@@ -1,0 +1,10 @@
+{
+  "name": "main",
+  "version": "1.0.0",
+  "dependencies": {
+  },
+  "perform": {
+    "version": "1.12.11",
+    "stub": "main"
+  }
+}

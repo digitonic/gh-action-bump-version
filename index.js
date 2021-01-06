@@ -97,9 +97,21 @@ Toolkit.run(async tools => {
     console.log('creating patch:', `${process.env['INPUT_TAG-PREFIX']}${current}`, `${process.env['INPUT_TAG-PREFIX']}${newVersion.replace('v', '')}`)
 
     if (messages.length > 0 && 'INPUT_STUB-PATH' in process.env && 'INPUT_PATCHES-PATH' in process.env) {
-      console.log('generating patch file')
       const stubPath = process.env['INPUT_STUB-PATH']
       const patchesPath = process.env['INPUT_PATCHES-PATH']
+
+      const stubPackagePath = `${tools.workspace}/${stubPath}/package.json`
+      if (fs.existsSync(stubPackagePath)) {
+        console.log('updating stub package.json')
+        const stubPackage = require(stubPackagePath)
+        stubPackage.perform = {
+          version: newVersion.replace('v', ''),
+          stub: stubPath
+        }
+        fs.writeFileSync(stubPath, JSON.stringify(stubPackage, null, 2))
+      }
+
+      console.log('generating patch file')
       console.log(tools.context.payload.before, ' to ', tools.context.payload.after)
       await tools.runInWorkspace('mkdir', ['-p', `${patchesPath}/${stubPath}`])
       const patchFile = `${tools.workspace}/${patchesPath}/${stubPath}/${newVersion.replace('v', '')}.patch`
