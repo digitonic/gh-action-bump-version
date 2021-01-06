@@ -7,9 +7,13 @@ branding:
   icon: chevron-up
   color: blue
 inputs:
-  patches-path:
+  patches_path:
     description: 'relative path to keep the patches in'
     default: 'patches'
+    required: false
+  stub_path:
+    description: 'relative path to stub to diff'
+    default: 'stubs/main'
     required: false
   tag-prefix:
     description: 'Prefix that is used for the git tag'
