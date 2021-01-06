@@ -100,7 +100,10 @@ Toolkit.run(async tools => {
     if (messages.length > 0) {
       console.log(tools.context.payload.before, ' to ', tools.context.payload.after)
       await tools.runInWorkspace('mkdir', ['-p', 'patches/stubs/main'])
-      await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before, `--output=${tools.workspace}/patches/stubs/main/${newVersion.replace('v', '')}.patch`])
+      const patchFile = `${tools.workspace}/patches/stubs/main/${newVersion.replace('v', '')}.patch`
+      console.log('pathfile:', patchFile)
+      await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before, `--output=${patchFile}`])
+      await tools.runInWorkspace('git', ['add', `${patchFile}`])
     }
 
     await tools.runInWorkspace('git', ['commit', '-a', '-m', `ci: ${commitMessage} ${newVersion}`])
