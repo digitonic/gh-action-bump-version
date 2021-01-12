@@ -1,0 +1,51 @@
+diff --git a/index.js b/index.js
+index c5731d5..f2b0812 100644
+--- a/index.js
++++ b/index.js
+@@ -118,7 +118,7 @@ Toolkit.run(async tools => {
+       console.log('pathfile:', patchFile)
+       const stub = `${tools.workspace}/${stubPath}/`
+       console.log('stub', stub)
+-      await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before, `--output=${patchFile}`, '--', stub])
++      execSync(`git diff -p ${tools.context.payload.before} --output=${patchFile}`, { cwd: stub })
+       if (fs.existsSync(patchFile)) {
+         await tools.runInWorkspace('git', ['add', `${patchFile}`])
+       }
+diff --git a/package-lock.json b/package-lock.json
+index 0a4070e..80c7ac7 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "gh-action-bump-version",
+-  "version": "8.1.21",
++  "version": "8.1.22",
+   "lockfileVersion": 1,
+   "requires": true,
+   "dependencies": {
+diff --git a/package.json b/package.json
+index db71dee..d099c5f 100644
+--- a/package.json
++++ b/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "gh-action-bump-version",
+-  "version": "8.1.21",
++  "version": "8.1.22",
+   "repository": {
+     "type": "git",
+     "url": "git+https://github.com/phips28/gh-action-bump-version.git"
+diff --git a/stubs/main/package.json b/stubs/main/package.json
+index a75c333..5f3afd3 100644
+--- a/stubs/main/package.json
++++ b/stubs/main/package.json
+@@ -3,7 +3,7 @@
+   "version": "1.0.0",
+   "dependencies": {},
+   "perform": {
+-    "version": "8.1.21",
++    "version": "8.1.22",
+     "stub": "stubs/main"
+   }
+ }
+\ No newline at end of file
