@@ -118,7 +118,7 @@ Toolkit.run(async tools => {
       console.log('pathfile:', patchFile)
       const stub = `${tools.workspace}/${stubPath}/`
       console.log('stub', stub)
-      await tools.runInWorkspace('git', ['diff', '-p', tools.context.payload.before, `--output=${patchFile}`, '--', stub])
+      execSync(`git diff -p ${tools.context.payload.before} --output=${patchFile}`, { cwd: stub })
       if (fs.existsSync(patchFile)) {
         await tools.runInWorkspace('git', ['add', `${patchFile}`])
       }
