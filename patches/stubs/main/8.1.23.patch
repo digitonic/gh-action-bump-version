@@ -1,0 +1,14 @@
+diff --git a/stubs/main/package.json b/stubs/main/package.json
+index 5f3afd3..e6ddb6a 100644
+--- a/stubs/main/package.json
++++ b/stubs/main/package.json
+@@ -3,7 +3,7 @@
+   "version": "1.0.0",
+   "dependencies": {},
+   "perform": {
+-    "version": "8.1.22",
++    "version": "8.1.23",
+     "stub": "stubs/main"
+   }
+ }
+\ No newline at end of file
